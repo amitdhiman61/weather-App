@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Forecast</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body .overlay {
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 50px auto;
+      width: 600px;
+    }
+
+    .main-temp {
+      font-size: 4rem;
+      font-weight: bold;
+    }
+
+    .location {
+      font-size: 1.5rem;
+    }
+
+    .info-bar {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .forecast-container,
+    .hourly-container {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .forecast-item,
+    .hourly-item {
+      text-align: center;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .temp-range {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Weather App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Main</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">About This App</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">🌦 Live weather updates</a></li>
+              <li><a class="dropdown-item" href="#">📅 Hourly forecasts</a></li>
+              <li><a class="dropdown-item" href="#">🛰 Satellite views</a></li>
+              <li><a class="dropdown-item" href="#">🔔 Weather alerts</a></li>
+              <li><a class="dropdown-item" href="#">🌓 Sunrise/sunset times</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link disabled">More info</a></li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" id="cityInput" placeholder="Enter City" />
+          <button class="btn btn-outline-success" type="button" onclick="getWeather()">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN WEATHER UI -->
+  <main class="overlay text-center">
+    <div>
+      <div class="main-temp" id="temperature">--°C</div>
+      <div class="location" id="cityName">Weather Center</div>
+      <div class="info-bar" id="description">--</div>
+    </div>
+
+    <div class="hourly-container mt-4">
+      <div><strong>FORECAST</strong></div>
+      <div class="d-flex justify-content-between mt-3">
+        <div class="now text-center">
+          <div>Now</div>
+          <div>🌡️</div>
+          <div>--</div>
+        </div>
+        <div class="humidity text-center">
+          <div>Humidity</div>
+          <div>💦</div>
+          <div>--</div>
+        </div>
+        <div class="wind-speed text-center">
+          <div>Wind Speed</div>
+          <div>💨</div>
+          <div>--</div>
+        </div>
+        <div class="air-quality text-center">
+          <div>Air Quality</div>
+          <div>🍃</div>
+          <div>--</div>
+        </div>
+        <div class="max-temp text-center">
+          <div>Max Temp</div>
+          <div>🔥</div>
+          <div>--</div>
+        </div>
+        <div class="clouds text-center">
+          <div>Clouds</div>
+          <div>☁️</div>
+          <div>--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hourly-chart-box mt-4 p-3 bg-dark rounded text-white">
+      <h4>HOURLY WEATHER</h4>
+      <div id="hourlyForecast">
+        <div id="hourlyTimeRow" class="d-flex justify-content-around text-light mb-2"></div>
+        <div id="hourlyIconRow" class="d-flex justify-content-around mb-2"></div>
+        <div id="hourlyTempRow" class="d-flex justify-content-around text-light"></div>
+      </div>
+    </div>
+
+
+
+    <div class="forecast-container">
+      <div><strong>FORECAST FOR SELECTED PLACES</strong></div>
+      <div class="mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="forecast-item">Delhi</div>
+          <div class="temp-range"><span>41°C</span></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="forecast-item">Mumbai</div>
+          <div class="temp-range"><span>29°C</span></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="forecast-item">Punjab</div>
+          <div class="temp-range"><span>39°C</span></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="forecast-item">London</div>
+          <div class="temp-range"><span>19°C</span></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="forecast-item">Switzerland</div>
+          <div class="temp-range"><span>19°C</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript Section -->
+  <script>
+    const apiKey = 'd0e11329de8b76a441f44035a5aea954';
+    function getWeather() {
+      const city = document.getElementById('cityInput').value || 'London';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error("City not found");
+          return response.json();
+        })
+        .then(data => {
+          const temp = Math.round(data.main.temp);
+          const description = data.weather[0].description;
+          const cityName = data.name;
+          const humidity = data.main.humidity;
+          const windSpeed = data.wind.speed;
+          const clouds = data.clouds.all;
+          const tempMax = Math.round(data.main.temp_max);
+
+          document.getElementById('temperature').innerText = `${temp}°C`;
+          document.getElementById('cityName').innerText = cityName;
+          document.getElementById('description').innerText = description;
+
+          document.querySelector('.now div:nth-child(3)').innerText = `${temp}°C`;
+          document.querySelector('.humidity div:nth-child(3)').innerText = `${humidity}%`;
+          document.querySelector('.wind-speed div:nth-child(3)').innerText = `${windSpeed} m/s`;
+          document.querySelector('.clouds div:nth-child(3)').innerText = `${clouds}%`;
+          document.querySelector('.max-temp div:nth-child(3)').innerText = `${tempMax}°C`;
+
+          // ✅ Get AQI
+          const lat = data.coord.lat;
+          const lon = data.coord.lon;
+
+          fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+            .then(res => res.json())
+            .then(airData => {
+              const aqi = airData.list[0].main.aqi;
+              let aqiText = '';
+              switch (aqi) {
+                case 1: aqiText = 'Good 😃'; break;
+                case 2: aqiText = 'Fair 🙂'; break;
+                case 3: aqiText = 'Moderate 😐'; break;
+                case 4: aqiText = 'Poor 😷'; break;
+                case 5: aqiText = 'Very Poor 😵'; break;
+                default: aqiText = 'Unknown';
+              }
+              document.querySelector('.air-quality div:nth-child(3)').innerText = aqiText;
+            });
+
+          // ✅ Fetch hourly forecast
+          function getHourlyForecast(city) {
+            const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+
+            fetch(url)
+              .then(res => res.json())
+              .then(data => {
+                const timeRow = document.getElementById('hourlyTimeRow');
+                const iconRow = document.getElementById('hourlyIconRow');
+                const tempRow = document.getElementById('hourlyTempRow');
+
+                timeRow.innerHTML = '';
+                iconRow.innerHTML = '';
+                tempRow.innerHTML = '';
+
+                const hourlyData = data.list.slice(0, 8); // next 8 entries (every 3 hours)
+
+                hourlyData.forEach(hour => {
+                  const date = new Date(hour.dt * 1000);
+                  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const temp = Math.round(hour.main.temp);
+                  const iconCode = hour.weather[0].icon;
+
+                  timeRow.innerHTML += `<div>${time}</div>`;
+                  iconRow.innerHTML += `<div><img src="https://openweathermap.org/img/wn/${iconCode}@2x.png" width="40"/></div>`;
+                  tempRow.innerHTML += `<div>${temp}°C</div>`;
+                });
+              })
+              .catch(err => console.error('Hourly forecast error:', err));
+          }
+
+          getHourlyForecast(cityName);
+        })
+        .catch(error => {
+          alert('Error: ' + error.message);
+          console.error(error);
+        });
+    }
+    
+
+
+    // ✅ Load default city on page load
+    window.onload = () => {
+      getWeather();
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
