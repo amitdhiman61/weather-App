@@ -1,0 +1,59 @@
+html,body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('OIP (1).jfif') no-repeat center center / cover;
+  z-index: -1;
+  filter: blur(8px);
+  transform: scale(1.05); /* Slight zoom to hide edges */
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.hourly-forecast {
+  background-color: #1c1c1e;
+  border-radius: 12px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.hourly-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 5px 0;
+  overflow-x: auto;
+}
+
+.hourly-row div {
+  flex: 0 0 50px;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+.hourly-row img {
+  width: 32px;
+  height: 32px;
+}
